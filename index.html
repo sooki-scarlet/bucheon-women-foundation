@@ -3,52 +3,447 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>부천여성청소년재단 - 맘편한 임산부 프리패스</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <title>맘편한 임산부 우선이용 - 부천여성청소년재단</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rose:    #F43F5E;
+            --rose-m:  #FB7185;
+            --rose-l:  #FFE4E6;
+            --violet:  #7C3AED;
+            --violet-m:#A78BFA;
+            --violet-l:#EDE9FE;
+            --plum:    #4C1D95;
+            --ink:     #1E1B2E;
+            --mist:    #F8F7FF;
+            --white:   #FFFFFF;
+            --gray:    #6B7280;
+            --gray-l:  #F3F4F6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--mist);
+            color: var(--ink);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ═══════════════════════════════
+           헤더 — 핑크→화이트 메시 그라데이션
+        ═══════════════════════════════ */
+        .main-header {
+            position: relative;
+            padding: 36px 28px 48px;
+            overflow: hidden;
+            background: #fff0f5;
+        }
+
+        /* 메시 그라데이션 — 핑크/바이올렛 → 하단 흰색으로 페이드 */
+        .main-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 130% 70% at 0%   0%,  #C026D3 0%, transparent 55%),
+                radial-gradient(ellipse 90%  80% at 100% 0%,  #FB7185 0%, transparent 50%),
+                radial-gradient(ellipse 70%  60% at 50%  40%, #E879F9 0%, transparent 50%),
+                radial-gradient(ellipse 100% 50% at 50% 100%, #ffffff 0%, transparent 60%);
+            opacity: 0.88;
+        }
+
+        /* 하단 흰색 페이드아웃 */
+        .main-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 55%;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.72));
+            pointer-events: none;
+        }
+
+        .header-inner {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 로고: 검정 배경이므로 invert → 핑크 배경엔 원본 or 다크 처리 */
+        .logo-img-header {
+            height: 44px;
+            width: auto;
+            filter: brightness(0) saturate(0%) invert(0%); /* 검정으로 */
+            margin-bottom: 20px;
+            opacity: 0.75;
+        }
+
+        .main-header h1 {
+            font-size: 1.95rem;
+            font-weight: 700;          /* 900 → 700 로 가늘게 */
+            color: #3B0764;
+            line-height: 1.28;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .header-sub {
+            font-size: 0.81rem;
+            color: rgba(76,29,149,0.6);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+
+        /* ═══════════════════════════════
+           메인 콘텐츠
+        ═══════════════════════════════ */
+        main {
+            flex: 1;
+            padding: 24px 20px;
+            background: var(--white);
+        }
+
+        /* ── 안내 카드 ── */
+        .notice-card {
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 16px rgba(124,58,237,0.10);
+        }
+
+        .notice-top {
+            background: linear-gradient(135deg, #4C1D95 0%, #7C3AED 50%, #DB2777 100%);
+            padding: 18px 20px 16px;
+        }
+
+        .notice-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.18);
+            backdrop-filter: blur(4px);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 9px;
+            letter-spacing: 0.04em;
+        }
+
+        .notice-title {
+            font-size: 0.97rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1.5;
+        }
+
+        .notice-bottom {
+            background: #FAFAFA;
+            padding: 16px 20px;
+            border: 1px solid rgba(124,58,237,0.08);
+            border-top: none;
+            border-radius: 0 0 18px 18px;
+        }
+
+        .notice-text {
+            font-size: 0.84rem;
+            color: #374151;
+            line-height: 1.8;
+        }
+
+        .notice-text em {
+            font-style: normal;
+            font-weight: 700;
+            color: var(--violet);
+        }
+
+        /* 펼치기 버튼 */
+        .toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            background: none;
+            border: none;
+            color: var(--violet);
+            font-size: 0.78rem;
+            font-weight: 700;
+            font-family: 'Noto Sans KR', sans-serif;
+            cursor: pointer;
+            padding: 10px 0 0;
+            transition: opacity 0.2s;
+        }
+        .toggle-btn:hover { opacity: 0.7; }
+        .toggle-arrow { transition: transform 0.25s; display: inline-block; }
+        .toggle-btn.open .toggle-arrow { transform: rotate(180deg); }
+
+        .notice-detail {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.35s ease;
+        }
+        .notice-detail.open { max-height: 500px; }
+
+        .nd-inner { padding-top: 14px; border-top: 1px solid #EDE9FE; margin-top: 10px; }
+
+        .nd-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.79rem;
+        }
+        .nd-table th {
+            background: var(--violet-l);
+            padding: 7px 10px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--plum);
+            border-bottom: 1.5px solid #C4B5FD;
+        }
+        .nd-table td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #F5F3FF;
+            vertical-align: top;
+            color: #374151;
+        }
+        .nd-table tr:last-child td { border-bottom: none; }
+        .nd-note {
+            margin-top: 10px;
+            font-size: 0.75rem;
+            color: #9CA3AF;
+            line-height: 1.65;
+        }
+
+        /* ── 섹션 헤더 ── */
+        .section-heading {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--gray);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 13px;
+        }
+
+        /* ── 기관 타일 — 세로 배열 ── */
+        .inst-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .inst-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 16px;
+            padding: 18px 20px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .inst-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(76,29,149,0.15);
+        }
+        .inst-card:active { transform: translateY(0); }
+
+        /* 각 기관별 그라데이션 — 미묘하고 세련되게 */
+        .inst-card.family {
+            background: linear-gradient(135deg, #6D28D9 0%, #7C3AED 40%, #A855F7 100%);
+        }
+        .inst-card.youth {
+            background: linear-gradient(135deg, #7C3AED 0%, #9333EA 40%, #C026D3 100%);
+        }
+        .inst-card.women {
+            background: linear-gradient(135deg, #9333EA 0%, #C026D3 40%, #DB2777 100%);
+        }
+        .inst-card.ilshim {
+            background: linear-gradient(135deg, #6D28D9 0%, #9333EA 50%, #C026D3 100%);
+        }
+
+        /* 타일 내 글로우 효과 */
+        .inst-card::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -10%;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            pointer-events: none;
+        }
+
+        .inst-left { position: relative; z-index: 1; }
+
+        .inst-name {
+            font-size: 1rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1.3;
+            margin-bottom: 5px;
+        }
+
+        .inst-target {
+            display: inline-block;
+            font-size: 0.69rem;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.92);
+            backdrop-filter: blur(4px);
+        }
+
+        .inst-arrow {
+            position: relative;
+            z-index: 1;
+            color: rgba(255,255,255,0.55);
+            font-size: 1.3rem;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        /* ── 푸터 ── */
+        footer {
+            padding: 18px 20px 24px;
+            text-align: center;
+            background: var(--white);
+        }
+        footer p {
+            font-size: 0.75rem;
+            color: #9CA3AF;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <!-- 재단 헤더 -->
-        <header class="foundation-header">
-            <div class="foundation-logo-main">
-                <img src="logo.png" alt="부천여성청소년재단" class="foundation-logo-img">
+        <!-- 헤더 -->
+        <header class="main-header">
+            <div class="header-inner">
+                <img src="logo.png" alt="부천여성청소년재단" class="logo-img-header">
+                <h1>맘편한 임산부<br>우선이용</h1>
+                <p class="header-sub">부천여성청소년재단 산하기관 프리패스 제도</p>
             </div>
-            <h1 class="foundation-title">부천여성청소년재단</h1>
-            <h2 class="foundation-subtitle">맘편한 임산부 프리패스</h2>
-            <p class="foundation-desc">누구나 장벽 없이 배움을 누릴 수 있는 포용적인 사회를 지향합니다</p>
         </header>
 
-        <!-- 기관 선택 -->
         <main>
-            <div class="select-section">
-                <h3 class="select-title">📍 기관을 선택해주세요</h3>
-                <p class="select-desc">각 기관별 임산부 프리패스 프로그램을 확인하실 수 있습니다</p>
-
-                <div class="institution-grid" id="institutionGrid">
-                    <!-- JavaScript로 생성 -->
+            <!-- 제도 안내 카드 -->
+            <div class="notice-card">
+                <div class="notice-top">
+                    <div class="notice-label">📋 안내</div>
+                    <p class="notice-title">「맘편한 임산부 우선이용」이란?</p>
+                </div>
+                <div class="notice-bottom">
+                    <p class="notice-text">
+                        부천여성청소년재단 산하기관(건강가정지원센터, 여성회관,
+                        여성청소년센터, 일쉼지원센터)은 <em>임신 중~출산 6개월 이내 여성</em>,
+                        <em>출산 후 100일~1년 이내 감정노동자</em>에게
+                        강좌 신청서 <em>우선등록 기회</em>를 드립니다.
+                    </p>
+                    <button class="toggle-btn" id="toggleBtn" onclick="toggleDetail()">
+                        상세 안내 보기
+                        <span class="toggle-arrow">▾</span>
+                    </button>
+                    <div class="notice-detail" id="noticeDetail">
+                        <div class="nd-inner">
+                            <table class="nd-table">
+                                <thead>
+                                    <tr><th>기관</th><th>참여 대상</th><th>프리패스</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>건강가정지원센터</td>
+                                        <td>임신 중 또는<br>출산 후 6개월 이내</td>
+                                        <td>추후공지</td>
+                                    </tr>
+                                    <tr>
+                                        <td>여성청소년센터</td>
+                                        <td>임신 중 또는<br>출산 후 6개월 이내</td>
+                                        <td>추후공지</td>
+                                    </tr>
+                                    <tr>
+                                        <td>여성회관</td>
+                                        <td>임신 중 또는<br>출산 후 6개월 이내</td>
+                                        <td>추후공지</td>
+                                    </tr>
+                                    <tr>
+                                        <td>일쉼지원센터</td>
+                                        <td>산후 100일~1년<br>감정노동자</td>
+                                        <td>정원의 10%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p class="nd-note">
+                                ※ 문의는 각 기관으로 직접 연락해 주세요.<br>
+                                ※ 프리패스 자리는 선착순으로 운영되며 기관별로 상이합니다.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- 정책 안내 -->
-            <div class="policy-box">
-                <h4>📋 정책 안내</h4>
-                <p>부천시 인구정책의 일환으로 임산부(임신 중~분만 후)에게 전 프로그램 <strong>최우선 등록</strong> 기회를 제공합니다</p>
-                <ul class="policy-list">
-                    <li>임신 중 ~ 분만 후 6개월 (기관별 상이)</li>
-                    <li>일쉼지원센터: 산후 100일 ~ 1년 감정노동자</li>
-                    <li>정원의 10%~20% 프리패스 배정</li>
-                </ul>
+            <!-- 기관 선택 -->
+            <p class="section-heading">참여 기관 선택</p>
+            <div class="inst-list">
+                <a href="inst.html?inst=family" class="inst-card family">
+                    <div class="inst-left">
+                        <div class="inst-name">건강가정지원센터</div>
+                        <span class="inst-target">임산부 · 출산 후 6개월 이내</span>
+                    </div>
+                    <span class="inst-arrow">›</span>
+                </a>
+                <a href="inst.html?inst=youth" class="inst-card youth">
+                    <div class="inst-left">
+                        <div class="inst-name">여성청소년센터</div>
+                        <span class="inst-target">임산부 · 출산 후 6개월 이내</span>
+                    </div>
+                    <span class="inst-arrow">›</span>
+                </a>
+                <a href="inst.html?inst=women" class="inst-card women">
+                    <div class="inst-left">
+                        <div class="inst-name">여성회관</div>
+                        <span class="inst-target">임산부 · 출산 후 6개월 이내</span>
+                    </div>
+                    <span class="inst-arrow">›</span>
+                </a>
+                <a href="ilshim.html" class="inst-card ilshim">
+                    <div class="inst-left">
+                        <div class="inst-name">일쉼지원센터</div>
+                        <span class="inst-target">출산 후 100일~1년 감정노동자</span>
+                    </div>
+                    <span class="inst-arrow">›</span>
+                </a>
             </div>
         </main>
 
-        <footer>
-            <p>© 부천여성청소년재단</p>
-            <p class="contact">문의: 032-XXX-XXXX</p>
-        </footer>
+        <footer><p>© 부천여성청소년재단</p></footer>
     </div>
 
-    <script src="data.js"></script>
-    <script src="app.js"></script>
+    <script>
+        function toggleDetail() {
+            const btn = document.getElementById('toggleBtn');
+            const detail = document.getElementById('noticeDetail');
+            btn.classList.toggle('open');
+            detail.classList.toggle('open');
+            const arrow = btn.querySelector('.toggle-arrow');
+            btn.childNodes.forEach(n => { if (n.nodeType === 3) n.textContent = ''; });
+            btn.innerHTML = btn.classList.contains('open')
+                ? '상세 안내 접기 <span class="toggle-arrow" style="transform:rotate(180deg);display:inline-block;">▾</span>'
+                : '상세 안내 보기 <span class="toggle-arrow" style="display:inline-block;">▾</span>';
+        }
+    </script>
 </body>
 </html>
